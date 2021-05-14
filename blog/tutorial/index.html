@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<!--
+	Strata by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Jochen Deprez</title>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport" />
+		<link href="../../assets/css/main.css" rel="stylesheet" />
+		<link href="../../assets/css/blog.css" rel="stylesheet" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a class="image avatar" href="#"><img alt="" src="../../images/avatarPicRect.jpg" /></a>
+					<h1><strong>Jochen Deprez</strong><br />
+						IT-student met een groot vermogen om
+						probleemoplossend te denken tijdens
+						het bouwen van software. Ik ben
+						flexibel en werk graag in
+						teamverband.<br /></h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- One -->
+					<section id="one">
+						<header class="major">
+							<h2>Tutorial: opzetten van een api in Rust</h2>
+							<h6>14 mei 2021</h6>
+						</header>
+						<p>Inleiding in het Rocket framework</p>
+						<img alt="logoMicrosoft" src="../../images/RustRocket.png"/>
+					</section>
+
+				<!-- Two -->
+					<section id="two">
+						<h3>Waarom Rust?</h3>
+						<p>Rust is gebaseerd op een low level taal, dus het is zeer snel. Daarnaast probeert rust ook de kenmerken van een high level taal te implementeren en dan vooral de memory safety van deze talen. Rust is daarom dan ook een taal die volgens mij in de toekomst meer en meer zal worden gebruikt. Daarom dat ik deze tutorial dan ook maak over Rust en meer specifiek over het Rocket framework.</p>
+
+						<h3>Getting started en opzetten van een standaard get route</h3>
+						<ol>
+							<li>
+								Installeer Rust
+								<ul>
+									<li>Ga naar de <a href="https://www.rust-lang.org/tools/install" target="_blank">website van Rust</a> en download de correcte installer vour jouw pc</li>
+									<li>Voer deze installer uit, maar ga niet zomaar door met de installatie</li>
+									<li>Customize de installatie door de default toolchain naar nightly te zetten. De nightly versie is namelijk nodig voor het Rocket framework</li>
+									Na het customizen zou je normaal onderstaande installatie moeten hebben:
+									<img src="../../images/tutorial/installation.png" alt="rustInstallatie">
+								</ul>
+							</li>
+							<li>
+								Pas de omgevinsvariablen aan
+								<p>Uit ervaring weet ik dat de installer soms de omgevingsvariabelen niet aanpast, pas
+									deze daarom nog eens handmatig aan.</p>
+								<ul>
+									<li>Typ in de zoekbalk: omgevingsvariabelen</li>
+									<li>Klik op <strong>Omgevingsvariableen voor uw account bewerken</strong></li>
+									<li>Dubbelklik dan op path en voeg het pad toe naar de <strong>bin</strong> folder in de <strong>.cargo</strong> folder. Deze is standaard geïnstalleerd onder het pad <strong>C:\Gebruikers\gebruiker\.cargo\bin</strong></li>
+									<li>Sla dit alles op en herstart de machine om er voor te zorgen dat alle wijzigingen actief zijn</li>
+								</ul>
+							<li>Zorg er ook zeker voor dat de C++ build tools zijn geïnstalleerd. Ik heb deze via de visual studio installer geïnstalleerd</li>
+							<img src="../../images/tutorial/buildTools.png" alt="C++ build tools">
+							<li>Maak een nieuw rust project aan
+							<ul>
+								<li>Ga naar de gewenste map waar je het project wil aanmaken</li>
+								<li>Voor het volgende commando uit in je CMD
+								<pre class="line-numbers">
+									<code>Cargo new project-name --bin</code>
+								</pre></li>
+								<li>Er wordt een nieuw mapje aangemaakt met je project files erin</li>
+							</ul>
+							</li>
+							<li>
+								Ga naar de Cargo.toml file en voeg volgende dependency toe:
+								<pre class="line-numbers">
+									<code>rocket = "0.4.7"</code>
+								</pre>
+							</li>
+							<li>
+								Ga naar src/main.rs en voeg volgende code toe:
+								<pre class="line-numbers">
+									<code>#![feature(proc_macro_hygiene, decl_macro)]
+
+#[macro_use] extern crate rocket;
+
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
+
+fn main() {
+    rocket::ignite().mount("/", routes![index]).launch();
+}
+</code>
+								</pre>
+							</li>
+							<li>
+								Voer het commando <code>cargo run</code> uit. Dit commando zou een applicatie moeten opstarten op poort 8000
+							</li>
+							<li>Ga naar <a href="https://localhost:8000" target="_blank">localhost:8000</a>. Daar zou je nu de string "Hello world" moeten terugkrijgen</li>
+						</ol>
+
+						<h3>
+							Post Route
+						</h3>
+						<p>Nu hebben we al gezien hoe we een get route definiëren, maar met een get route alleen zijn we niet veel. Daarom nu nog een uitleg hoe je een post route moet maken in Rust.</p>
+						<ol>
+							<li>Voeg onderstaande depencies toe in de Cargo.toml file:
+							<pre>
+								<code>serde = { version = "1.0", features = ["derive"] }
+serde_derive = "1.0.118"
+rocket_contrib = "0.4.6"
+</code>
+							</pre></li>
+							<li>Voeg de uses van deze dependencies toe in de main.rs file. Dit doe je als volgt:
+							<pre class="lessMargin"><code>use serde::Deserialize;
+use rocket_contrib::json::Json;
+</code></pre></li>
+							<li>
+								Definieer je object die je wil posten naar je api (in dit geval is dit login info) als volt:
+								<pre class="lessMargin"><code>use serde::Deserialize;
+use rocket_contrib::json::Json;
+</code></pre>
+							</li>
+							<li>
+								Maak je post functie en geef daarin mee dat je LoginInfo wil terugkrijgen als object
+								<pre class="lessMargin"><code>#[post("/user/login", data="&lt;login_info&gt;", format="json")]
+fn login_user(login_info: Json&lt;login_info&gt;) -> String {
+    format!("Email:{}, password: {}", login_info.email, login_info.password)
+}
+</code></pre>
+							</li>
+							<li>
+								Tot slot moet je nog je functie toevoegen aan je main methode zodat deze kan uitgevoerd worden, doe dit als volgt:
+								<pre class="lessMargin"><code>fn main() {
+    rocket::ignite().mount("/api", routes![index, login_user]).launch();
+}
+</code></pre>
+							</li>
+						</ol>
+						<h3>
+							Conclusie
+						</h3>
+						<p>Nu heb je alles gezien om aan de slag te kunnen met een basis api, vanzelfsprekend kan je dit nog veel meer uitbreiden. De demo code en nog een paar andere voorbeelde samen met een postman collectie zijn te vinden op
+							<a href="https://github.com/JochenDeprez/MarsIT-Rust">mijn github</a>. </p>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<ul class="icons">
+						<li><a class="icon brands fa-github" href="https://github.com/DeprezJ"><span class="label">Github</span></a></li>
+						<li><a class="icon brands fa-github" href="https://github.com/JochenDeprez"><span class="label">Github</span></a></li>
+						<li><a class="icon brands fa-dribbble" href="https://www.linkedin.com/in/jochen-deprez/"><span class="label">Dribbble</span></a></li>
+						<li><a class="icon solid fa-envelope" href="mailto:jochendeprez@hotmail.be"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; Jochen Deprez</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="../../assets/js/jquery.min.js"></script>
+			<script src="../../assets/js/jquery.poptrox.min.js"></script>
+			<script src="../../assets/js/browser.min.js"></script>
+			<script src="../../assets/js/breakpoints.min.js"></script>
+			<script src="../../assets/js/util.js"></script>
+			<script src="../../assets/js/main.js"></script>
+
+	</body>
+</html>

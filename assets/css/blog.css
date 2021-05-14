@@ -5,3 +5,11 @@
 #contentImage{
     width: 100%;
 }
+
+pre{
+    margin-bottom: -30px;
+}
+
+.lessMargin{
+    margin-bottom: 0;
+}
