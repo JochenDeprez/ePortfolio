@@ -43,9 +43,9 @@
 				<!-- Two -->
 					<section id="two">
 						<h3>Waarom Rust?</h3>
-						<p>Rust is gebaseerd op een low level taal, dus het is zeer snel. Daarnaast probeert rust ook de kenmerken van een high level taal te implementeren en dan vooral de memory safety van deze talen. Rust is daarom dan ook een taal die volgens mij in de toekomst meer en meer zal worden gebruikt. Daarom dat ik deze tutorial dan ook maak over Rust en meer specifiek over het Rocket framework.</p>
+						<p>Rust is gebaseerd op een low level taal, dus het is heel snel. Daarnaast probeert Rust ook de kenmerken van een high level taal te implementeren en dan vooral de memory safety van deze talen. Rust is daarom dan ook een taal die volgens mij in de toekomst meer en meer zal worden gebruikt. Daarom dat ik deze tutorial dan ook maak over Rust en meer specifiek over het Rocket framework.</p>
 
-						<h3>Getting started en opzetten van een standaard get route</h3>
+						<h3>Rust installeren van een standaard get route</h3>
 						<ol>
 							<li>
 								Installeer Rust
@@ -53,7 +53,6 @@
 									<li>Ga naar de <a href="https://www.rust-lang.org/tools/install" target="_blank">website van Rust</a> en download de correcte installer vour jouw pc</li>
 									<li>Voer deze installer uit, maar ga niet zomaar door met de installatie</li>
 									<li>Customize de installatie door de default toolchain naar nightly te zetten. De nightly versie is namelijk nodig voor het Rocket framework</li>
-									Na het customizen zou je normaal onderstaande installatie moeten hebben:
 									<img src="../../images/tutorial/installation.png" alt="rustInstallatie">
 								</ul>
 							</li>
@@ -63,11 +62,11 @@
 									deze daarom nog eens handmatig aan.</p>
 								<ul>
 									<li>Typ in de zoekbalk: omgevingsvariabelen</li>
-									<li>Klik op <strong>Omgevingsvariableen voor uw account bewerken</strong></li>
+									<li>Klik op <strong>Omgevingsvariabelen voor uw account bewerken</strong></li>
 									<li>Dubbelklik dan op path en voeg het pad toe naar de <strong>bin</strong> folder in de <strong>.cargo</strong> folder. Deze is standaard geïnstalleerd onder het pad <strong>C:\Gebruikers\gebruiker\.cargo\bin</strong></li>
 									<li>Sla dit alles op en herstart de machine om er voor te zorgen dat alle wijzigingen actief zijn</li>
 								</ul>
-							<li>Zorg er ook zeker voor dat de C++ build tools zijn geïnstalleerd. Ik heb deze via de visual studio installer geïnstalleerd</li>
+							<li>Zorg er ook zeker voor dat de <a href="https://www.google.be/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjQjbH-2snwAhUOEBQKHaSwANYQFjAAegQIBBAD&url=https%3A%2F%2Fgo.microsoft.com%2Ffwlink%2F%3FLinkId%3D691126&usg=AOvVaw0geDw_h-TSCfzTMvYE2ZOw">C++ build tools</a> zijn geïnstalleerd. Ik heb deze via de visual studio installer geïnstalleerd</li>
 							<img src="../../images/tutorial/buildTools.png" alt="C++ build tools">
 							<li>Maak een nieuw rust project aan
 							<ul>
@@ -104,9 +103,9 @@ fn main() {
 								</pre>
 							</li>
 							<li>
-								Voer het commando <code>cargo run</code> uit. Dit commando zou een applicatie moeten opstarten op poort 8000
+								Voer het commando <code>cargo run</code> uit in je project folder. Dit commando zou een applicatie moeten opstarten op poort 8000
 							</li>
-							<li>Ga naar <a href="https://localhost:8000" target="_blank">localhost:8000</a>. Daar zou je nu de string "Hello world" moeten terugkrijgen</li>
+							<li>Ga naar <a href="http://localhost:8000" target="_blank">localhost:8000</a>. Daar zou je nu de string "Hello world" moeten terugkrijgen</li>
 						</ol>
 
 						<h3>
@@ -121,12 +120,12 @@ serde_derive = "1.0.118"
 rocket_contrib = "0.4.6"
 </code>
 							</pre></li>
-							<li>Voeg de uses van deze dependencies toe in de main.rs file. Dit doe je als volgt:
+							<li>Voeg de uses van deze dependencies toe in de main.rs file. Voeg deze toe onder je macro uses:
 							<pre class="lessMargin"><code>use serde::Deserialize;
 use rocket_contrib::json::Json;
 </code></pre></li>
 							<li>
-								Definieer je object die je wil posten naar je api (in dit geval is dit login info) als volt:
+								Definieer je object die je wil posten naar je api (in dit geval is dit login info) als volgt. Voeg deze toe onder je uses
 								<pre class="lessMargin"><code>#[derive(Deserialize)]
 struct LoginInfo {
     email: String,
@@ -146,7 +145,7 @@ fn login_user(login_info: Json&lt;login_info&gt;) -> String {
 							<li>
 								Tot slot moet je nog je functie toevoegen aan je main methode zodat deze kan uitgevoerd worden, doe dit als volgt:
 								<pre class="lessMargin"><code>fn main() {
-    rocket::ignite().mount("/api", routes![index, login_user]).launch();
+    rocket::ignite().mount("/", routes![index, login_user]).launch();
 }
 </code></pre>
 							</li>
@@ -154,7 +153,7 @@ fn login_user(login_info: Json&lt;login_info&gt;) -> String {
 						<h3>
 							Conclusie
 						</h3>
-						<p>Nu heb je alles gezien om aan de slag te kunnen met een basis api, vanzelfsprekend kan je dit nog veel meer uitbreiden. De demo code en nog een paar andere voorbeelde samen met een postman collectie zijn te vinden op
+						<p>Nu heb je alles gezien om aan de slag te kunnen met een basis api, natuurlijk kan je deze api nog uitbreiden. De demo code en enkele andere voorbeelden zijn samen met een postman collectie terug te vinden op
 							<a href="https://github.com/JochenDeprez/MarsIT-Rust">mijn github</a>. </p>
 					</section>
 
