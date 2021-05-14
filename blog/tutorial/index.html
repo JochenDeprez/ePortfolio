@@ -127,8 +127,12 @@ use rocket_contrib::json::Json;
 </code></pre></li>
 							<li>
 								Definieer je object die je wil posten naar je api (in dit geval is dit login info) als volt:
-								<pre class="lessMargin"><code>use serde::Deserialize;
-use rocket_contrib::json::Json;
+								<pre class="lessMargin"><code>#[derive(Deserialize)]
+struct LoginInfo {
+    email: String,
+    password: String,
+}
+
 </code></pre>
 							</li>
 							<li>
